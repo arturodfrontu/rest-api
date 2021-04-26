@@ -1,14 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const db = require('./db');
 const app = express();
-const testimonialsRoutes = require('./testimonials.routes');
+const testimonialsRoutes = require('./routes/testimonials.routes');
+const concertsRoutes = require('./routes/concerts.routes');
+const seatsRoutes = require('./routes/seats.routes');
 
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', testimonialsRoutes);
+app.use('/api', concertsRoutes);
+app.use('/api', seatsRoutes);
 
 app.get('/', (req, res, next) => {
     res.json();

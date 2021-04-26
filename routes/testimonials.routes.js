@@ -1,21 +1,21 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./db");
+const db = require('../db');
 const router = express.Router();
 const uuid = require('uuid');
 
 router.route("/testimonials").get((req, res, next) => {
-  res.json(db);
+  res.json(db.testimonials);
 });
 
 router.route("/testimonials/:id").get((req, res, next) => {
   const id = req.params.id;
   let result;
   if (id === "random") {
-    let index = Math.floor(Math.random() * db.length);
-    result = db[index];
+    let index = Math.floor(Math.random() * db.testimonials.length);
+    result = db.testimonials[index];
   } else {
-    result = db.filter((elem) => {
+    result = db.testimonials.filter((elem) => {
       return elem.id == id;
     });
   }
@@ -24,7 +24,7 @@ router.route("/testimonials/:id").get((req, res, next) => {
 
 router.route("/testimonials").post((req, res, next) => {
   randomId = uuid.v4();
-  db.push({
+  db.testimonials.push({
     id: randomId,
     author: req.body.author,
     text: req.body.text,
@@ -34,7 +34,7 @@ router.route("/testimonials").post((req, res, next) => {
 
 router.route("/testimonials/:id").put((req, res, next) => {
   const id = req.params.id;
-  db.map((elem) => {
+  db.testimonials.map((elem) => {
     if (elem.id == id) {
       elem.author = req.body.author;
       elem.text = req.body.text;
@@ -46,9 +46,9 @@ router.route("/testimonials/:id").put((req, res, next) => {
 
 router.route("/testimonials/:id").delete((req, res, next) => {
   const id = req.params.id;
-  const testimonial = db.filter((elem) => elem.id == id);
-  const index = db.indexOf(testimonial[0]);
-  db.splice(index, 1);
+  const testimonial = db.testimonials.filter((elem) => elem.id == id);
+  const index = db.testimonials.indexOf(testimonial[0]);
+  db.testimonials.splice(index, 1);
   res.json({ message: "OK" });
 });
 
